@@ -1,0 +1,17 @@
+/* Looks like plain text; the dotted underline hints that it can be tapped, the outline shows it's being edited */
+.input {
+  padding: 0;
+  border: none;
+  border-bottom: 2px dotted var(--muted);
+  border-radius: 0;
+  background: none;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+.input:focus {
+  border-bottom-color: transparent;
+  border-radius: 6px;
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}

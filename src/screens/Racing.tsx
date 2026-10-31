@@ -70,7 +70,7 @@ export default function Racing({ code, room, playerId, isHost }: RoomScreenProps
           <div className={shared.aceGrid}>
             {ACES.map((a) => (
               <button key={a} className={shared.aceButton} onClick={() => setPendingWinner(a)}>
-                <AceLabel ace={a} />
+                <AceLabel ace={a} large />
               </button>
             ))}
           </div>

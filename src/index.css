@@ -3,12 +3,12 @@
 
 :root {
   /* Colors */
-  --bg: #0f1a14;
-  --surface: #18271e;
-  --surface-2: #213328;
-  --border: #2e4436;
+  --bg: #0f1622;
+  --surface: #172133;
+  --surface-2: #1f2c42;
+  --border: #2d3e58;
   --text: #f2efe6;
-  --muted: #9fb0a5;
+  --muted: #9eabc0;
   --accent: #e8b84a;
   --accent-text: #1a1406;
   --danger: #ff7a6b;
@@ -19,6 +19,8 @@
   --blatt: #6fcf7c;
   --eichel: #d4a06a;
   --schelle: #f2c14e;
+  --french-red: #ff6b6f;
+  --french-black: var(--text); /* drawn light, black would vanish on the dark background */
 
   --radius: 16px;
 

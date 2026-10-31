@@ -9,32 +9,39 @@ import {
   LEAVE_ROOM_DIALOG_LOCKED_MESSAGE,
   LEAVE_ROOM_DIALOG_TITLE,
   MENU_CLOSE_ROOM,
+  MENU_JOIN_REQUESTS,
   MENU_LEAVE_ROOM,
+  MENU_MANAGE_PLAYERS,
 } from '../textValues'
+import type { Room } from '../types'
 import ConfirmDialog from './ConfirmDialog'
+import JoinRequestList from './JoinRequestList'
 import Menu, { type MenuItem } from './Menu'
+import PlayerManagement from './PlayerManagement'
 
-// Actions that need a confirmation before they run
-type PendingAction = 'close' | 'leave'
+// Overlays opened from the menu: confirmations for close/leave, and the host's player and join request lists
+type PendingAction = 'close' | 'leave' | 'players' | 'requests'
 
 interface RoomMenuProps {
   code: string
+  room: Room
   isHost: boolean
-  locked: boolean
   onExit: () => void // called after closing/leaving succeeded, returns to Home
 }
 
-// Room options in the top-right menu: the host can close the room, guests can leave it
-export default function RoomMenu({ code, isHost, locked, onExit }: RoomMenuProps) {
+// Room options in the top-right menu: the host can manage players and join requests and close the room, guests can leave it
+export default function RoomMenu({ code, room, isHost, onExit }: RoomMenuProps) {
   const [pending, setPending] = useState<PendingAction | null>(null)
   const [run, busy, error] = useAction()
 
   // Add further room options here
-  const items: MenuItem[] = [
-    isHost
-      ? { label: MENU_CLOSE_ROOM, danger: true, onSelect: () => setPending('close') }
-      : { label: MENU_LEAVE_ROOM, danger: true, onSelect: () => setPending('leave') },
-  ]
+  const items: MenuItem[] = isHost
+    ? [
+        { label: MENU_MANAGE_PLAYERS, onSelect: () => setPending('players') },
+        { label: MENU_JOIN_REQUESTS, onSelect: () => setPending('requests') },
+        { label: MENU_CLOSE_ROOM, danger: true, onSelect: () => setPending('close') },
+      ]
+    : [{ label: MENU_LEAVE_ROOM, danger: true, onSelect: () => setPending('leave') }]
 
   const confirm = () =>
     run(async () => {
@@ -45,6 +52,8 @@ export default function RoomMenu({ code, isHost, locked, onExit }: RoomMenuProps
   return (
     <>
       <Menu items={items} />
+      {pending === 'players' && <PlayerManagement code={code} room={room} onClose={() => setPending(null)} />}
+      {pending === 'requests' && <JoinRequestList code={code} requests={room.requests} onClose={() => setPending(null)} />}
       {pending === 'close' && (
         <ConfirmDialog
           title={CLOSE_ROOM_DIALOG_TITLE}
@@ -59,8 +68,8 @@ export default function RoomMenu({ code, isHost, locked, onExit }: RoomMenuProps
       {pending === 'leave' && (
         <ConfirmDialog
           title={LEAVE_ROOM_DIALOG_TITLE}
-          // Only warn when rejoining is impossible
-          message={locked ? LEAVE_ROOM_DIALOG_LOCKED_MESSAGE : undefined}
+          // Only mention the host when rejoining needs their approval
+          message={room.locked ? LEAVE_ROOM_DIALOG_LOCKED_MESSAGE : undefined}
           confirmLabel={LEAVE_ROOM_DIALOG_CONFIRM}
           busy={busy}
           error={error}

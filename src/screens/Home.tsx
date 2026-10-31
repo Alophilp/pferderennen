@@ -59,6 +59,8 @@ export default function Home({ initialCode, onJoined }: HomeProps) {
         />
       </label>
 
+      <hr className={styles.separator} />
+
       <button className={`${shared.btn} ${shared.btnPrimary}`} disabled={!trimmedName || busy} onClick={create}>
         {HOME_CREATE_ROOM_BUTTON}
       </button>

@@ -1,0 +1,59 @@
+/* −, amount, + and ++ kept together on the right of the row */
+.controls {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Icons are centered exactly, unlike the − / + text characters */
+.stepButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface-2);
+  font-size: 1.25rem;
+}
+
+.stepButton:disabled {
+  opacity: 0.45;
+}
+
+/* "++": two plus icons pulled close together */
+.allButton {
+  width: 48px;
+}
+
+.allButton svg + svg {
+  margin-left: -0.3em;
+}
+
+/* Tappable number (NumberInput); fixed width for up to three digits so the buttons don't shift */
+.amount {
+  width: 3ch;
+  font-size: 1.1rem;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  text-align: center;
+}
+
+.remaining {
+  font-weight: 700;
+  text-align: center;
+}
+
+.remainingDone {
+  color: var(--success);
+}
+
+/* Reset and random side by side, confirm below them */
+.actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}

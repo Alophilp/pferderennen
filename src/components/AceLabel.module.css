@@ -11,6 +11,25 @@
   vertical-align: -0.3em;
 }
 
+/* French suit icons are square, so 1em matches the text height */
+.frenchIcon {
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.125em;
+}
+
+/* Tappable ace buttons without names: the icon alone fills the button */
+.large .icon {
+  height: 3.2em;
+  vertical-align: middle;
+}
+
+.large .frenchIcon {
+  width: 2.6em;
+  height: 2.6em;
+  vertical-align: middle;
+}
+
 /* One text color per ace, defined as tokens in index.css */
 .herz {
   color: var(--herz);
@@ -26,4 +45,13 @@
 
 .schelle {
   color: var(--schelle);
+}
+
+/* French deck: red suits (Herz, Karo) and black suits (Pik, Kreuz) */
+.frenchRed {
+  color: var(--french-red);
+}
+
+.frenchBlack {
+  color: var(--french-black);
 }

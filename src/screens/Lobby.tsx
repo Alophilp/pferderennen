@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import { FiSettings } from 'react-icons/fi'
+import SettingsSheet from '../components/SettingsSheet'
 import { useAction } from '../hooks/useAction'
 import { roomLink, sortedPlayers } from '../lib/helpers'
 import { startWagering } from '../lib/roomActions'
@@ -14,6 +16,7 @@ import {
   LOBBY_START_WAGERING_BUTTON,
   LOBBY_WAITING_FOR_HOST,
   OWN_PLAYER_SUFFIX,
+  SETTINGS_BUTTON_LABEL,
 } from '../textValues'
 import type { RoomScreenProps } from '../types'
 import styles from './Lobby.module.css'
@@ -22,6 +25,7 @@ import styles from './Lobby.module.css'
 export default function Lobby({ code, room, playerId, isHost }: RoomScreenProps) {
   const [run, busy, error] = useAction()
   const [copied, setCopied] = useState(false)
+  const [settingsOpen, setSettingsOpen] = useState(false)
   const link = roomLink(code)
 
   const share = async () => {
@@ -44,10 +48,17 @@ export default function Lobby({ code, room, playerId, isHost }: RoomScreenProps)
 
   return (
     <main className={shared.screen}>
-      <header className={shared.screenHeader}>
+      <header className={isHost ? `${shared.screenHeader} ${styles.headerWithSettings}` : shared.screenHeader}>
         <p className={shared.eyebrow}>{LOBBY_ROOM_CODE_LABEL}</p>
         <p className={styles.roomCode}>{code}</p>
       </header>
+
+      {isHost && (
+        <button className={styles.settingsButton} aria-label={SETTINGS_BUTTON_LABEL} onClick={() => setSettingsOpen(true)}>
+          <FiSettings aria-hidden="true" />
+        </button>
+      )}
+      {settingsOpen && <SettingsSheet code={code} room={room} onClose={() => setSettingsOpen(false)} />}
 
       <section className={shared.stack}>
         <button className={shared.btn} onClick={share}>
