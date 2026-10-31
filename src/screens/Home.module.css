@@ -6,6 +6,14 @@
   text-transform: uppercase;
 }
 
+/* Sets the name apart from the create/join options below it */
+.separator {
+  width: 100%;
+  margin: 12px 0;
+  border: none;
+  border-top: 1px solid var(--border);
+}
+
 /* "oder" between the create and join sections, with a line on each side */
 .divider {
   display: flex;

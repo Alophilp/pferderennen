@@ -1,5 +1,7 @@
 import { useState } from 'react'
+import { FiMinus, FiPlus } from 'react-icons/fi'
 import AceLabel from '../components/AceLabel'
+import NumberInput from '../components/NumberInput'
 import { useAction } from '../hooks/useAction'
 import { sortedPlayers } from '../lib/helpers'
 import { editWager, placeWager, startRace } from '../lib/roomActions'
@@ -17,6 +19,7 @@ import {
   WAGERING_INCREASE_LABEL,
   WAGERING_MY_WAGER_LABEL,
   WAGERING_ON,
+  WAGERING_SIPS_INPUT_LABEL,
   WAGERING_START_RACE_BUTTON,
   WAGERING_STATUS_EDITING,
   WAGERING_STATUS_READY,
@@ -133,10 +136,17 @@ function WagerEditor({ initial, busy, onSubmit }: WagerEditorProps) {
           disabled={sips <= 1}
           onClick={() => setSips((s) => Math.max(1, s - 1))}
         >
-          −
+          <FiMinus aria-hidden="true" />
         </button>
         <div className={styles.stepperValue}>
-          <span className={styles.stepperNumber}>{sips}</span>
+          <NumberInput
+            className={styles.stepperNumber}
+            value={sips}
+            min={1}
+            max={MAX_SIPS}
+            onChange={setSips}
+            label={WAGERING_SIPS_INPUT_LABEL}
+          />
           <span className={shared.muted}>{SIPS_UNIT(sips)}</span>
         </div>
         <button
@@ -145,7 +155,7 @@ function WagerEditor({ initial, busy, onSubmit }: WagerEditorProps) {
           disabled={sips >= MAX_SIPS}
           onClick={() => setSips((s) => Math.min(MAX_SIPS, s + 1))}
         >
-          +
+          <FiPlus aria-hidden="true" />
         </button>
       </div>
 

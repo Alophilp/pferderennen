@@ -13,7 +13,7 @@ import {
 } from 'firebase/database'
 import { getDb } from '../firebase'
 import { isStale, ROOM_MAX_IDLE_MS } from './helpers'
-import { ERROR_NO_FREE_ROOM_CODE, ERROR_ROOM_NOT_FOUND } from '../textValues'
+import { ERROR_NAME_TAKEN, ERROR_NO_FREE_ROOM_CODE, ERROR_ROOM_NOT_FOUND } from '../textValues'
 import type { Ace, Distribution, Room, Settings } from '../types'
 import { getPlayerId } from './player'
 
@@ -76,6 +76,11 @@ export async function joinRoom(code: string, name: string): Promise<void> {
   if (!room || isStale(room)) throw new Error(ERROR_ROOM_NOT_FOUND(code))
   const request = room.requests?.[playerId]
   if (request?.status === 'blocked') return // left waiting forever
+  // Names must be unique among the players and the guests waiting to be let in (ignoring case)
+  const others = [...Object.entries(room.players), ...Object.entries(room.requests ?? {}).filter(([, r]) => r.status === 'pending')]
+  if (others.some(([id, other]) => id !== playerId && other.name.toLowerCase() === name.toLowerCase())) {
+    throw new Error(ERROR_NAME_TAKEN(name))
+  }
   const existing = room.players[playerId]
   if (existing || !room.locked) {
     await set(roomRef(code, `players/${playerId}`), { name, joinedAt: existing?.joinedAt ?? Date.now() })

@@ -48,6 +48,8 @@ export const ERROR_NO_FREE_ROOM_CODE =
   "Konnte keinen freien Raumcode finden. Bitte nochmal versuchen.";
 export const ERROR_ROOM_NOT_FOUND = (code: string) =>
   `Raum ${code} nicht gefunden.`;
+export const ERROR_NAME_TAKEN = (name: string) =>
+  `Der Name „${name}“ ist in diesem Raum schon vergeben.`;
 
 /* Room view (loading and fallback states) */
 
@@ -155,6 +157,7 @@ export const WAGERING_EDIT_BUTTON = "Ändern";
 export const WAGERING_SUBMIT_BUTTON = "Einsatz abgeben";
 export const WAGERING_DECREASE_LABEL = "Weniger";
 export const WAGERING_INCREASE_LABEL = "Mehr";
+export const WAGERING_SIPS_INPUT_LABEL = "Anzahl Schlücke";
 export const WAGERING_ALL_WAGERS_HEADING = "Alle Einsätze";
 export const WAGERING_STATUS_WAITING = "wartet";
 export const WAGERING_STATUS_EDITING = "ändert…";
@@ -193,7 +196,7 @@ export const RESULT_NO_WINNERS = (aceName: string) =>
 export const RESULT_TAP_TO_DISTRIBUTE = "Tippe hier, um zu verteilen";
 export const RESULT_DISTRIBUTED = "Verteilt ✓";
 export const RESULT_PLAYER_MUST_DISTRIBUTE = (sips: number) =>
-  `muss ${SIPS_LABEL(sips)} verteilen`;
+  `darf ${SIPS_LABEL(sips)} verteilen`;
 export const RESULT_PLAYER_HAS_DISTRIBUTED = (sips: number) =>
   `hat ${SIPS_LABEL(sips)} verteilt ✓`;
 export const RESULT_RECEIVED_HEADING = "Du bekommst:";
@@ -213,8 +216,11 @@ export const RESULT_NEW_ROUND_DIALOG_CONFIRM = "Neue Runde";
 export const DISTRIBUTE_TITLE = "Schlücke verteilen";
 export const DISTRIBUTE_REMAINING = (sips: number) =>
   sips === 0 ? "Alle verteilt ✓" : `Noch ${SIPS_LABEL(sips)} zu verteilen`;
-export const DISTRIBUTE_ALL_BUTTON = "Alle"; // gives all remaining sips to that player
 export const DISTRIBUTE_RANDOM_BUTTON = "Zufall";
+export const DISTRIBUTE_RESET_BUTTON = "Zurücksetzen";
 export const DISTRIBUTE_CONFIRM_BUTTON = "Bestätigen";
-export const DISTRIBUTE_DECREASE_LABEL = (name: string) => `Weniger für ${name}`;
+export const DISTRIBUTE_DECREASE_LABEL = (name: string) =>
+  `Weniger für ${name}`;
 export const DISTRIBUTE_INCREASE_LABEL = (name: string) => `Mehr für ${name}`;
+export const DISTRIBUTE_ALL_LABEL = (name: string) => `Alle übrigen an ${name}`; // the "++" button
+export const DISTRIBUTE_AMOUNT_LABEL = (name: string) => `Schlücke für ${name}`;

@@ -1,19 +1,23 @@
+import { FiMinus, FiPlus } from 'react-icons/fi'
 import { useAction } from '../hooks/useAction'
 import { sortedPlayers } from '../lib/helpers'
 import { distributeSips } from '../lib/roomActions'
 import shared from '../styles/shared.module.css'
 import {
-  DISTRIBUTE_ALL_BUTTON,
+  DISTRIBUTE_ALL_LABEL,
+  DISTRIBUTE_AMOUNT_LABEL,
   DISTRIBUTE_CONFIRM_BUTTON,
   DISTRIBUTE_DECREASE_LABEL,
   DISTRIBUTE_INCREASE_LABEL,
   DISTRIBUTE_RANDOM_BUTTON,
   DISTRIBUTE_REMAINING,
+  DISTRIBUTE_RESET_BUTTON,
   DISTRIBUTE_TITLE,
   OWN_PLAYER_SUFFIX,
 } from '../textValues'
 import type { Distribution, Room } from '../types'
 import styles from './DistributeSheet.module.css'
+import NumberInput from './NumberInput'
 import Sheet from './Sheet'
 
 interface DistributeSheetProps {
@@ -64,13 +68,16 @@ export default function DistributeSheet({ code, room, playerId, total, draft, on
             {DISTRIBUTE_REMAINING(remaining)}
           </p>
           <div className={styles.actions}>
+            <button className={shared.btn} disabled={remaining === total} onClick={() => onDraftChange({})}>
+              {DISTRIBUTE_RESET_BUTTON}
+            </button>
             <button className={shared.btn} disabled={remaining === 0} onClick={randomize}>
               {DISTRIBUTE_RANDOM_BUTTON}
             </button>
-            <button className={`${shared.btn} ${shared.btnPrimary}`} disabled={remaining !== 0 || busy} onClick={confirm}>
-              {DISTRIBUTE_CONFIRM_BUTTON}
-            </button>
           </div>
+          <button className={`${shared.btn} ${shared.btnPrimary}`} disabled={remaining !== 0 || busy} onClick={confirm}>
+            {DISTRIBUTE_CONFIRM_BUTTON}
+          </button>
         </>
       }
     >
@@ -90,19 +97,34 @@ export default function DistributeSheet({ code, room, playerId, total, draft, on
                   disabled={sips === 0}
                   onClick={() => setAmount(id, sips - 1)}
                 >
-                  −
+                  <FiMinus aria-hidden="true" />
                 </button>
-                <span className={styles.amount}>{sips}</span>
+                {/* Typed values are capped at what this player has plus what's still left */}
+                <NumberInput
+                  className={styles.amount}
+                  value={sips}
+                  min={0}
+                  max={sips + remaining}
+                  onChange={(value) => setAmount(id, value)}
+                  label={DISTRIBUTE_AMOUNT_LABEL(player.name)}
+                />
                 <button
                   className={styles.stepButton}
                   aria-label={DISTRIBUTE_INCREASE_LABEL(player.name)}
                   disabled={remaining === 0}
                   onClick={() => setAmount(id, sips + 1)}
                 >
-                  +
+                  <FiPlus aria-hidden="true" />
                 </button>
-                <button className={shared.rowButton} disabled={remaining === 0} onClick={() => setAmount(id, sips + remaining)}>
-                  {DISTRIBUTE_ALL_BUTTON}
+                {/* "++": all remaining sips to this player */}
+                <button
+                  className={`${styles.stepButton} ${styles.allButton}`}
+                  aria-label={DISTRIBUTE_ALL_LABEL(player.name)}
+                  disabled={remaining === 0}
+                  onClick={() => setAmount(id, sips + remaining)}
+                >
+                  <FiPlus aria-hidden="true" />
+                  <FiPlus aria-hidden="true" />
                 </button>
               </div>
             </li>

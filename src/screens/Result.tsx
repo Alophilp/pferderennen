@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import AceLabel from '../components/AceLabel'
 import ConfirmDialog from '../components/ConfirmDialog'
 import DistributeSheet from '../components/DistributeSheet'
@@ -53,10 +53,20 @@ export default function Result({ code, room, playerId, isHost }: RoomScreenProps
   // Winners who haven't handed out their sips yet; the host is asked before starting a new round without them
   const pendingWinners = distributing ? winners.filter(([id]) => !room.distributions?.[id]) : []
 
+  const received = distributing ? receivedSips(room, playerId) : []
+  const receivedTotal = received.reduce((sum, { sips }) => sum + sips, 0)
+  const lastReceivedTotal = useRef(receivedTotal)
+
+  // Vibration is Android only; iOS Safari has no vibration API
   useEffect(() => {
-    // Android only; iOS Safari has no vibration API
     if (myWinnings !== null) navigator.vibrate?.([200, 100, 200])
   }, [myWinnings])
+
+  // Buzz whenever a winner hands this player more sips (not on load, so a reload doesn't buzz again)
+  useEffect(() => {
+    if (receivedTotal > lastReceivedTotal.current) navigator.vibrate?.(400)
+    lastReceivedTotal.current = receivedTotal
+  }, [receivedTotal])
 
   const startNewRound = () => run(() => newRound(code))
 
@@ -87,12 +97,12 @@ export default function Result({ code, room, playerId, isHost }: RoomScreenProps
           <p className={shared.bigNumber}>{myWinnings}</p>
           <p className={shared.bigUnit}>{SIPS_UNIT(myWinnings)}</p>
           {distributing && <p className={styles.winHint}>{canDistribute ? RESULT_TAP_TO_DISTRIBUTE : RESULT_DISTRIBUTED}</p>}
-          {distributing && <ReceivedSips room={room} playerId={playerId} />}
+          <ReceivedSips received={received} total={receivedTotal} room={room} playerId={playerId} />
         </section>
       ) : (
         <section className={`${shared.card} ${shared.centerText}`}>
           <p>{RESULT_YOU_LOST}</p>
-          {distributing && <ReceivedSips room={room} playerId={playerId} />}
+          <ReceivedSips received={received} total={receivedTotal} room={room} playerId={playerId} />
         </section>
       )}
 
@@ -166,13 +176,28 @@ export default function Result({ code, room, playerId, isHost }: RoomScreenProps
   )
 }
 
-// Sips this player got from the winners so far: one line per winner plus the total. Nothing until the first winner confirms.
-function ReceivedSips({ room, playerId }: { room: Room; playerId: string }) {
-  const received = Object.entries(room.distributions ?? {}).flatMap(([giverId, distribution]) =>
+interface ReceivedSip {
+  giverId: string
+  sips: number
+}
+
+// Sips a player got from the winners who have confirmed so far
+function receivedSips(room: Room, playerId: string): ReceivedSip[] {
+  return Object.entries(room.distributions ?? {}).flatMap(([giverId, distribution]) =>
     distribution[playerId] ? [{ giverId, sips: distribution[playerId] }] : [],
   )
+}
+
+interface ReceivedSipsProps {
+  received: ReceivedSip[]
+  total: number
+  room: Room
+  playerId: string
+}
+
+// One line per winner plus the total. Nothing until the first winner hands this player sips.
+function ReceivedSips({ received, total, room, playerId }: ReceivedSipsProps) {
   if (received.length === 0) return null
-  const total = received.reduce((sum, { sips }) => sum + sips, 0)
 
   return (
     <div className={styles.received}>
