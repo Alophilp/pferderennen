@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Stem -->
+  <path d="M32 46V61" stroke="#1f5e1f" stroke-width="4" stroke-linecap="round"/>
+  <!-- Blatt: pointed leaf, tip up -->
+  <path d="M32 4C42 14 56 24 54 38C52 48 42 52 32 50C22 52 12 48 10 38C8 24 22 14 32 4Z" fill="#3f9a3a" stroke="#1f5e1f" stroke-width="2" stroke-linejoin="round"/>
+  <!-- Veins -->
+  <path d="M32 12V48M32 24L23 31M32 24L41 31M32 35L18 42M32 35L46 42" stroke="#a8dd8a" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+</svg>

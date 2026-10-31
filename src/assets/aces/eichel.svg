@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <clipPath id="cup">
+      <path d="M16 34C16 24 23 18 32 18C41 18 48 24 48 34Z"/>
+    </clipPath>
+  </defs>
+  <!-- Stem -->
+  <path d="M32 19C32 13 34 8 39 5" stroke="#4a3415" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+  <!-- Nut -->
+  <path d="M19 33C19 49 26 60 32 60C38 60 45 49 45 33Z" fill="#c98a3c" stroke="#6b4316" stroke-width="2" stroke-linejoin="round"/>
+  <ellipse cx="26.5" cy="43" rx="3" ry="7" fill="#fff" opacity="0.35"/>
+  <!-- Cup with cross-hatched scales -->
+  <path d="M16 34C16 24 23 18 32 18C41 18 48 24 48 34Z" fill="#7a5a2a"/>
+  <g clip-path="url(#cup)" stroke="#4a3415" stroke-width="1.5">
+    <path d="M8 34L32 10M16 34L40 10M24 34L48 10M32 34L56 10M40 34L64 10"/>
+    <path d="M56 34L32 10M48 34L24 10M40 34L16 10M32 34L8 10M24 34L0 10"/>
+  </g>
+  <path d="M16 34C16 24 23 18 32 18C41 18 48 24 48 34Z" fill="none" stroke="#4a3415" stroke-width="2" stroke-linejoin="round"/>
+</svg>

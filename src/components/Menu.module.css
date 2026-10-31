@@ -1,0 +1,62 @@
+/* Fixed to the top right so it stays reachable while scrolling */
+.menu {
+  position: fixed;
+  top: max(12px, env(safe-area-inset-top));
+  right: max(12px, env(safe-area-inset-right));
+  z-index: 20;
+}
+
+/* Round "⋯" button; sits above the backdrop so it can also close the menu */
+.trigger {
+  position: relative;
+  z-index: 1;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--surface-2);
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+/* Invisible full-screen layer that catches taps outside the list */
+.backdrop {
+  position: fixed;
+  inset: 0;
+}
+
+.list {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 1;
+  min-width: 220px;
+  margin: 0;
+  padding: 6px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface);
+  box-shadow: 0 12px 32px rgb(0 0 0 / 0.45);
+  list-style: none;
+}
+
+.item {
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 14px;
+  border: none;
+  border-radius: 10px;
+  background: none;
+  font-weight: 600;
+  text-align: left;
+}
+
+.item:active {
+  background: var(--surface-2);
+}
+
+/* Destructive actions such as closing or leaving the room */
+.itemDanger {
+  color: var(--danger);
+}

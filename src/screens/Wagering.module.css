@@ -1,0 +1,53 @@
+/* Locked-in wager, shown instead of the editor */
+.myWager {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: center;
+}
+
+.myWagerValue {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+/* Sip picker: big − / + buttons around the current number */
+.stepper {
+  display: grid;
+  grid-template-columns: 64px 1fr 64px;
+  align-items: center;
+  gap: 12px;
+}
+
+.stepperBtn {
+  min-height: 64px;
+  padding: 0;
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.stepperValue {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stepperNumber {
+  font-size: 2.75rem;
+  font-variant-numeric: tabular-nums;
+  font-weight: 800;
+  line-height: 1;
+}
+
+/* Per-player status in the list (wartet / ändert… / ✓) */
+.status {
+  min-width: 3.5em;
+  color: var(--muted);
+  font-size: 0.875rem;
+  text-align: right;
+}
+
+.statusReady {
+  color: var(--success);
+  font-weight: 700;
+}

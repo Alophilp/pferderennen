@@ -1,0 +1,23 @@
+/* Large room code for reading out to the others */
+.roomCode {
+  font-size: 3.5rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  line-height: 1.1;
+}
+
+/* Fallback link text when sharing/copying isn't available; one tap selects it all */
+.linkText {
+  overflow-wrap: anywhere;
+  user-select: all;
+}
+
+/* "Host" badge in the player list */
+.tag {
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  color: var(--accent);
+  font-size: 0.75rem;
+  font-weight: 600;
+}

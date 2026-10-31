@@ -1,0 +1,57 @@
+const KEYS = {
+  id: 'pferderennen.playerId',
+  name: 'pferderennen.name',
+  room: 'pferderennen.room',
+}
+
+// Fallback for when localStorage is unavailable (private mode, blocked storage)
+const memory = new Map<string, string>()
+
+function read(key: string): string | null {
+  try {
+    return localStorage.getItem(key) ?? memory.get(key) ?? null
+  } catch {
+    return memory.get(key) ?? null
+  }
+}
+
+function write(key: string, value: string | null) {
+  if (value === null) memory.delete(key)
+  else memory.set(key, value)
+  try {
+    if (value === null) localStorage.removeItem(key)
+    else localStorage.setItem(key, value)
+  } catch {
+    // storage blocked; the in-memory value is used instead
+  }
+}
+
+// crypto.randomUUID only exists in secure contexts, which a LAN dev URL is not
+function randomId(): string {
+  return Array.from(crypto.getRandomValues(new Uint8Array(12)), (b) => b.toString(16).padStart(2, '0')).join('')
+}
+
+export function getPlayerId(): string {
+  let id = read(KEYS.id)
+  if (!id) {
+    id = randomId()
+    write(KEYS.id, id)
+  }
+  return id
+}
+
+export function getStoredName(): string {
+  return read(KEYS.name) ?? ''
+}
+
+export function storeName(name: string) {
+  write(KEYS.name, name)
+}
+
+export function getStoredRoom(): string | null {
+  return read(KEYS.room)
+}
+
+export function storeRoom(code: string | null) {
+  write(KEYS.room, code)
+}

@@ -1,0 +1,27 @@
+/* Own wager filling most of the screen, to hold the phone up to the table */
+.showcase {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 55dvh;
+  text-align: center;
+}
+
+.showcaseAce {
+  margin-top: 12px;
+  font-size: 2.25rem;
+  font-weight: 800;
+}
+
+/* Collapsible "Alle Wetten" section below the showcase */
+.allWagers summary {
+  padding: 4px 0;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.allWagers[open] summary {
+  margin-bottom: 12px;
+}

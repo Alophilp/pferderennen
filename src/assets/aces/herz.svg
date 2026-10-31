@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Herz: broad, rounded German-style heart -->
+  <path d="M32 57C20 47 6 37 6 22C6 13 13 7 21 7C26 7 30 10 32 14C34 10 38 7 43 7C51 7 58 13 58 22C58 37 44 47 32 57Z" fill="#d8232a" stroke="#8f1218" stroke-width="2" stroke-linejoin="round"/>
+  <!-- Highlight -->
+  <ellipse cx="19" cy="20" rx="5" ry="7" transform="rotate(-30 19 20)" fill="#fff" opacity="0.3"/>
+</svg>

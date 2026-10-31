@@ -1,0 +1,13 @@
+/* Highlighted card for winners */
+.win {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 12%, var(--surface));
+  text-align: center;
+}
+
+.winTitle {
+  margin-bottom: 8px;
+  color: var(--accent);
+  font-size: 1.75rem;
+  font-weight: 800;
+}

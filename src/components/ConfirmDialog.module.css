@@ -1,0 +1,38 @@
+/* Dimmed full-screen overlay; above the menu (z-index 20) */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: flex;
+  align-items: flex-end;
+  padding: 16px;
+  padding-bottom: max(16px, env(safe-area-inset-bottom));
+  background: rgb(0 0 0 / 0.6);
+}
+
+/* Bottom sheet, so the buttons are within thumb reach */
+.dialog {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--surface);
+  text-align: center;
+}
+
+.title {
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+/* Cancel and confirm side by side */
+.actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}

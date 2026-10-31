@@ -1,0 +1,200 @@
+/* Styles used by several screens and components.
+   Anything used by only one component lives in that component's own .module.css. */
+
+/* Screen layout: one full-height column, padded around the phone's notch and home bar */
+.screen {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 560px;
+  min-height: 100dvh;
+  margin: 0 auto;
+  padding: max(20px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right))
+    max(20px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+}
+
+.screen.center {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* Right padding keeps header text clear of the fixed menu button */
+.screenHeader {
+  padding-right: 56px;
+}
+
+.screenHeader h1 {
+  font-size: 2rem;
+  line-height: 1.15;
+}
+
+/* Pushed to the bottom of the screen, where the thumb reaches */
+.screenFooter {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: auto;
+  text-align: center;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.card {
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+/* Text */
+.eyebrow {
+  color: var(--muted);
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.small {
+  font-size: 0.875rem;
+}
+
+.centerText {
+  text-align: center;
+}
+
+.error {
+  color: var(--danger);
+  text-align: center;
+}
+
+/* Buttons: full width, at least 52px tall for easy tapping */
+.btn {
+  width: 100%;
+  min-height: 52px;
+  padding: 12px 20px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface-2);
+  font-size: 1.05rem;
+  font-weight: 600;
+  transition: transform 0.08s;
+}
+
+/* Press feedback instead of hover, since there is no hover on touch */
+.btn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.btnPrimary {
+  border-color: transparent;
+  background: var(--accent);
+  color: var(--accent-text);
+}
+
+/* Labelled text input (font-size ≥ 16px prevents iOS zoom on focus) */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field > span {
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.field input {
+  min-height: 52px;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  font-size: 1.1rem;
+}
+
+.field input:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+/* Player lists (lobby, wagering, racing, result) */
+.playerList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.playerRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 52px;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+}
+
+.playerName {
+  flex: 1;
+  overflow: hidden;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.playerMeta {
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+/* 2×2 grid of ace buttons (picking a wager, picking the winner) */
+.aceGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.aceButton {
+  min-height: 72px;
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface-2);
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.aceButton[aria-pressed='true'] {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 18%, var(--surface-2));
+}
+
+/* Huge sip number, readable from across the table (racing, result) */
+.bigNumber {
+  font-size: clamp(7rem, 45vw, 14rem);
+  font-variant-numeric: tabular-nums;
+  font-weight: 900;
+  line-height: 0.9;
+}
+
+.bigUnit {
+  color: var(--muted);
+  font-size: 1.5rem;
+}

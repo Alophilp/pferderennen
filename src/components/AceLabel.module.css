@@ -1,0 +1,28 @@
+/* Keeps icon and name on one line */
+.aceLabel {
+  white-space: nowrap;
+}
+
+/* Sized in em so the icon grows with the text (small in lists, large in the racing showcase) */
+.icon {
+  width: 1.2em;
+  height: 1.2em;
+  vertical-align: -0.25em;
+}
+
+/* One text color per ace, defined as tokens in index.css */
+.herz {
+  color: var(--herz);
+}
+
+.blatt {
+  color: var(--blatt);
+}
+
+.eichel {
+  color: var(--eichel);
+}
+
+.schelle {
+  color: var(--schelle);
+}
