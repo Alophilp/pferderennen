@@ -1,19 +1,31 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <defs>
-    <clipPath id="cup">
-      <path d="M16 34C16 24 23 18 32 18C41 18 48 24 48 34Z"/>
-    </clipPath>
-  </defs>
-  <!-- Stem -->
-  <path d="M32 19C32 13 34 8 39 5" stroke="#4a3415" stroke-width="3.5" stroke-linecap="round" fill="none"/>
-  <!-- Nut -->
-  <path d="M19 33C19 49 26 60 32 60C38 60 45 49 45 33Z" fill="#c98a3c" stroke="#6b4316" stroke-width="2" stroke-linejoin="round"/>
-  <ellipse cx="26.5" cy="43" rx="3" ry="7" fill="#fff" opacity="0.35"/>
-  <!-- Cup with cross-hatched scales -->
-  <path d="M16 34C16 24 23 18 32 18C41 18 48 24 48 34Z" fill="#7a5a2a"/>
-  <g clip-path="url(#cup)" stroke="#4a3415" stroke-width="1.5">
-    <path d="M8 34L32 10M16 34L40 10M24 34L48 10M32 34L56 10M40 34L64 10"/>
-    <path d="M56 34L32 10M48 34L24 10M40 34L16 10M32 34L8 10M24 34L0 10"/>
-  </g>
-  <path d="M16 34C16 24 23 18 32 18C41 18 48 24 48 34Z" fill="none" stroke="#4a3415" stroke-width="2" stroke-linejoin="round"/>
+<svg version="1.0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 66 121"
+ width="66px" height="121px"
+ preserveAspectRatio="xMidYMid meet">
+<!-- "Bay_eichel.svg" by Infanf, Wikimedia Commons, public domain: https://commons.wikimedia.org/wiki/File:Bay_eichel.svg -->
+<!-- viewBox added so the icon scales -->
+<path style="fill:Yellow;stroke:black;" d="M13 21 Q13 1 33 1 L33 52 L13 52 Z" />
+<path style="fill:Red;stroke:black;" d="M33 1 Q53 1 53 21 L53 52 L33 52 Z" />
+<path style="fill:#0000DF;stroke:black;" d="M13 52 L33 52 L33 62 L13 62 Z" />
+<path style="fill:#007F00;stroke:black;" d="M37 96 Q37 119 16 119 L24 110 Q25 109 27 108 Q29 107 29 102 L29 96" />
+<path style="fill:none;stroke:black;" d="M27 108 Q31.2 108 31.2 110.5 Q31.2 114 29 115.57" />
+<path style="fill:none;stroke:black;" d="M35 96 Q35 107 31 111" />
+<path style="fill:none;stroke:black;" d="M33 96 Q33 102 31.5 106" />
+<path style="fill:none;stroke:black;" d="M20 117 L26 111 Q28 109 29 111 Q29.5 112 28 113" />
+<path style="fill:#000000;stroke:black;" d="M33 52 L33 62 L53 62 L53 52 Z" />
+<path style="fill:#007F00;stroke:black;" d="M13 62 Q1 62 1 74 Q1 96 33 96 Q64 96 64 74 Q64 62 54 62 Z" />
+<path style="fill:#000000;stroke:black;" d="M33 66.5 Q28.5 66.5 28.5 71 Q28.5 77 33 87 Q37.5 77 37.5 71 Q37.5 66.5 33 66.5" />
+<path style="fill:#000000;stroke:black;" d="M21 89 Q10 80 10 74 Q10 67 15 67 Q17 67 17 71 Q17 72 16.5 73 Q16 74 16 75 Q16 80 21 89" />
+<path style="fill:#000000;stroke:black;" d="M45 89 Q56 80 56 74 Q56 67 51 67 Q49 67 49 71 Q49 72 49.5 73 Q50 74 50 75 Q50 80 45 89" />
+<path style="stroke:black;" d="M33 62 L33 96" />
+<path style="stroke:black;" d="M35.86 1 L35.86 96" />
+<path style="stroke:black;" d="M38.7 1.8 L38.7 96" />
+<path style="stroke:black;" d="M41.6 2.7 L41.6 95" />
+<path style="stroke:black;" d="M44.4 3 L44.4 95" />
+<path style="stroke:black;" d="M47.3 5.4 L47.3 94.6" />
+<path style="stroke:black;" d="M50.1 8.8 L50.1 93.7" />
+<path style="stroke:black;" d="M53 62 L53 92.6" />
+<path style="stroke:black;" d="M55.8 62.3 L55.8 91" />
+<path style="stroke:black;" d="M58.7 63 L58.7 88.6" />
+<path style="stroke:black;" d="M61.6 65 L61.6 84.7" />
+<!--Code Copyright by infanf-->
 </svg>

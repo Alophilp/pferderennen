@@ -3,11 +3,12 @@
   white-space: nowrap;
 }
 
-/* Sized in em so the icon grows with the text (small in lists, large in the racing showcase) */
+/* Sized in em so the icon grows with the text (small in lists, large in the racing showcase).
+   Only the height is fixed because the suit icons have different proportions (the acorn is tall and narrow). */
 .icon {
-  width: 1.2em;
-  height: 1.2em;
-  vertical-align: -0.25em;
+  width: auto;
+  height: 1.3em;
+  vertical-align: -0.3em;
 }
 
 /* One text color per ace, defined as tokens in index.css */
