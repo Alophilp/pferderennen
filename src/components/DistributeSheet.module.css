@@ -1,0 +1,47 @@
+/* −, amount, + and "Alle" kept together on the right of the row */
+.controls {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 6px;
+}
+
+.stepButton {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface-2);
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.stepButton:disabled {
+  opacity: 0.45;
+}
+
+/* Fixed width so the buttons don't shift when the number gets a second digit */
+.amount {
+  min-width: 2ch;
+  font-size: 1.1rem;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  text-align: center;
+}
+
+.remaining {
+  font-weight: 700;
+  text-align: center;
+}
+
+.remainingDone {
+  color: var(--success);
+}
+
+/* Random and confirm side by side */
+.actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}

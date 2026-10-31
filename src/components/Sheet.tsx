@@ -7,12 +7,13 @@ interface SheetProps {
   title: string
   error?: string | null
   onClose: () => void
+  footer?: ReactNode // shown below the scrollable content, so it stays visible with long lists
   children: ReactNode
 }
 
 // Bottom sheet with a title, scrollable content and a close button, used for lists opened from the room menu.
 // Tapping the dimmed area outside the sheet also closes it.
-export default function Sheet({ title, error, onClose, children }: SheetProps) {
+export default function Sheet({ title, error, onClose, footer, children }: SheetProps) {
   return (
     <div
       className={styles.backdrop}
@@ -24,6 +25,7 @@ export default function Sheet({ title, error, onClose, children }: SheetProps) {
       <div className={styles.sheet}>
         <p className={styles.title}>{title}</p>
         <div className={styles.content}>{children}</div>
+        {footer}
         {error && <p className={shared.error}>{error}</p>}
         <button className={shared.btn} onClick={onClose}>
           {CLOSE_BUTTON}

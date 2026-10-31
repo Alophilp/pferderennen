@@ -1,4 +1,4 @@
-import type { Ace, AceDisplay, Deck, JoinRequestStatus } from "./types";
+import type { Ace, AceDisplay, Deck, JoinRequestStatus, OnOff } from "./types";
 
 // All text shown to the user lives here.
 // Texts that depend on a value (count, code, ...) are functions; everything else is a plain constant.
@@ -129,6 +129,11 @@ export const ACE_DISPLAY_NAMES: Record<AceDisplay, string> = {
   icon: "Symbol",
   iconAndName: "Symbol & Name",
 };
+export const SETTINGS_DISTRIBUTE_SIPS_LABEL = "Schlücke in der App verteilen";
+export const ON_OFF_NAMES: Record<OnOff, string> = {
+  off: "Aus",
+  on: "An",
+};
 
 /* Lobby */
 
@@ -183,3 +188,33 @@ export const RESULT_PLAYER_DISTRIBUTES = (sips: number) =>
   `verteilt ${SIPS_LABEL(sips)}`;
 export const RESULT_NO_WINNERS = (aceName: string) =>
   `Niemand hat auf ${aceName} gesetzt.`;
+
+// Only used when sips are handed out in the app (setting "Schlücke in der App verteilen")
+export const RESULT_TAP_TO_DISTRIBUTE = "Tippe hier, um zu verteilen";
+export const RESULT_DISTRIBUTED = "Verteilt ✓";
+export const RESULT_PLAYER_MUST_DISTRIBUTE = (sips: number) =>
+  `muss ${SIPS_LABEL(sips)} verteilen`;
+export const RESULT_PLAYER_HAS_DISTRIBUTED = (sips: number) =>
+  `hat ${SIPS_LABEL(sips)} verteilt ✓`;
+export const RESULT_RECEIVED_HEADING = "Du bekommst:";
+export const RESULT_RECEIVED_FROM = (sips: number, name: string) =>
+  `${SIPS_LABEL(sips)} von ${name}`;
+export const RESULT_RECEIVED_FROM_YOURSELF = "dir selbst"; // as in "2 Schlücke von dir selbst"
+export const RESULT_RECEIVED_FROM_UNKNOWN = "jemandem"; // giver has left the room
+export const RESULT_RECEIVED_TOTAL = (sips: number) =>
+  `Insgesamt ${SIPS_LABEL(sips)}`;
+export const RESULT_NEW_ROUND_DIALOG_TITLE = "Noch nicht alle haben verteilt";
+export const RESULT_NEW_ROUND_DIALOG_MESSAGE = (names: string) =>
+  `Noch offen: ${names}. Trotzdem eine neue Runde starten?`;
+export const RESULT_NEW_ROUND_DIALOG_CONFIRM = "Neue Runde";
+
+/* Distributing sips (winner, opened from the win card) */
+
+export const DISTRIBUTE_TITLE = "Schlücke verteilen";
+export const DISTRIBUTE_REMAINING = (sips: number) =>
+  sips === 0 ? "Alle verteilt ✓" : `Noch ${SIPS_LABEL(sips)} zu verteilen`;
+export const DISTRIBUTE_ALL_BUTTON = "Alle"; // gives all remaining sips to that player
+export const DISTRIBUTE_RANDOM_BUTTON = "Zufall";
+export const DISTRIBUTE_CONFIRM_BUTTON = "Bestätigen";
+export const DISTRIBUTE_DECREASE_LABEL = (name: string) => `Weniger für ${name}`;
+export const DISTRIBUTE_INCREASE_LABEL = (name: string) => `Mehr für ${name}`;

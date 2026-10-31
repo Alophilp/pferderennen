@@ -5,8 +5,10 @@ import shared from '../styles/shared.module.css'
 import {
   ACE_DISPLAY_NAMES,
   DECK_NAMES,
+  ON_OFF_NAMES,
   SETTINGS_ACE_DISPLAY_LABEL,
   SETTINGS_DECK_LABEL,
+  SETTINGS_DISTRIBUTE_SIPS_LABEL,
   SETTINGS_RESET_BUTTON,
   SETTINGS_TITLE,
 } from '../textValues'
@@ -40,6 +42,12 @@ export default function SettingsSheet({ code, room, onClose }: SettingsSheetProp
           options={ACE_DISPLAY_NAMES}
           value={settings.aceDisplay}
           onChange={(aceDisplay) => run(() => updateSetting(code, 'aceDisplay', aceDisplay))}
+        />
+        <Choice
+          label={SETTINGS_DISTRIBUTE_SIPS_LABEL}
+          options={ON_OFF_NAMES}
+          value={settings.distributeSips}
+          onChange={(distributeSips) => run(() => updateSetting(code, 'distributeSips', distributeSips))}
         />
         {/* Nothing to reset while every setting is at its default */}
         <button className={shared.btn} disabled={busy || !room.settings} onClick={() => run(() => resetSettings(code))}>

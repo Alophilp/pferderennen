@@ -14,7 +14,7 @@ import {
 import { getDb } from '../firebase'
 import { isStale, ROOM_MAX_IDLE_MS } from './helpers'
 import { ERROR_NO_FREE_ROOM_CODE, ERROR_ROOM_NOT_FOUND } from '../textValues'
-import type { Ace, Room, Settings } from '../types'
+import type { Ace, Distribution, Room, Settings } from '../types'
 import { getPlayerId } from './player'
 
 // All writes to the database. Every phone re-renders from the room data, so these only change data.
@@ -141,11 +141,17 @@ export function declareWinner(code: string, winner: Ace) {
   return update(roomRef(code), { winner, phase: 'result' })
 }
 
-// Host: clear wagers and winner, then go back to wagering
+// Winner: publish how the current player handed out their sips; final once written
+export function distributeSips(code: string, distribution: Distribution) {
+  return set(roomRef(code, `distributions/${getPlayerId()}`), distribution)
+}
+
+// Host: clear wagers, winner and handed-out sips, then go back to wagering
 export function newRound(code: string) {
   return update(roomRef(code), {
     wagers: null,
     winner: null,
+    distributions: null,
     round: increment(1),
     phase: 'wagering',
     lastActive: serverTimestamp(),

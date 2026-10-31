@@ -9,16 +9,23 @@ export type Deck = 'bavarian' | 'french'
 // How an ace is labeled: only its suit icon, or the icon followed by its name
 export type AceDisplay = 'icon' | 'iconAndName'
 
+export type OnOff = 'off' | 'on'
+
 // Room-wide settings, changed by the host in the lobby
 export interface Settings {
   deck: Deck
   aceDisplay: AceDisplay
+  distributeSips: OnOff // winners hand out their sips in the app instead of at the table
 }
 
 export const DEFAULT_SETTINGS: Settings = {
   deck: 'bavarian',
   aceDisplay: 'icon',
+  distributeSips: 'off',
 }
+
+// Sips a winner handed out: receiving playerId → sips
+export type Distribution = Record<string, number>
 
 export interface Player {
   name: string
@@ -50,6 +57,7 @@ export interface Room {
   players: Record<string, Player>
   wagers?: Record<string, Wager> // cleared each round
   winner?: Ace
+  distributions?: Record<string, Distribution> // per winner, set once they confirm; cleared each round
   requests?: Record<string, JoinRequest>
   settings?: Partial<Settings> // missing values fall back to DEFAULT_SETTINGS
   lastActive?: number // server time of the last room creation, game start or new round; missing in rooms from before it existed
