@@ -165,6 +165,25 @@
   white-space: nowrap;
 }
 
+/* Compact button inside a player row (join requests, player management) */
+.rowButton {
+  flex-shrink: 0;
+  min-height: 40px;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface-2);
+  font-weight: 600;
+}
+
+.rowButton:disabled {
+  opacity: 0.45;
+}
+
+.rowButtonDanger {
+  color: var(--danger);
+}
+
 /* 2×2 grid of ace buttons (picking a wager, picking the winner) */
 .aceGrid {
   display: grid;

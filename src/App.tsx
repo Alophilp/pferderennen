@@ -1,9 +1,13 @@
 import { useEffect, useState } from 'react'
+import JoinRequestPrompt from './components/JoinRequestPrompt'
 import RoomMenu from './components/RoomMenu'
 import { isFirebaseConfigured } from './firebase'
+import { SettingsContext } from './hooks/useSettings'
 import { useRoom } from './hooks/useRoom'
+import { roomSettings } from './lib/helpers'
 import { getStoredRoom, storeRoom } from './lib/player'
 import Home from './screens/Home'
+import JoinRequestPending from './screens/JoinRequestPending'
 import Lobby from './screens/Lobby'
 import Racing from './screens/Racing'
 import Result from './screens/Result'
@@ -65,6 +69,12 @@ function RoomView({ code, onLeave }: { code: string; onLeave: () => void }) {
     )
   }
 
+  // Waiting for the host to answer this player's join request (blocked guests see the same waiting screen)
+  const request = room && !me ? room.requests?.[playerId] : undefined
+  if (request && request.status !== 'cancelled') {
+    return <JoinRequestPending code={code} denied={request.status === 'denied'} onLeave={onLeave} />
+  }
+
   // Room deleted by the host, or this player was removed from it
   if (!room || !me) {
     return (
@@ -78,10 +88,12 @@ function RoomView({ code, onLeave }: { code: string; onLeave: () => void }) {
   }
 
   return (
-    <>
-      <RoomMenu code={code} isHost={isHost} locked={room.locked} onExit={onLeave} />
+    <SettingsContext value={roomSettings(room)}>
+      <RoomMenu code={code} room={room} isHost={isHost} onExit={onLeave} />
       <PhaseScreen code={code} room={room} playerId={playerId} isHost={isHost} />
-    </>
+      {/* Requests can come in during any phase, but the host only gets to answer them while wagering */}
+      {isHost && room.phase === 'wagering' && <JoinRequestPrompt code={code} requests={room.requests} />}
+    </SettingsContext>
   )
 }
 

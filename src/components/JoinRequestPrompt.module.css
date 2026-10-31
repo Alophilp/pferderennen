@@ -1,0 +1,41 @@
+/* Pinned to the bottom like a notification, without blocking the screen.
+   Below the menu (z-index 20) and dialogs (z-index 30). */
+.prompt {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 16px;
+  padding-bottom: max(16px, env(safe-area-inset-bottom));
+  border: 1px solid var(--accent);
+  border-bottom: none;
+  border-radius: 20px 20px 0 0;
+  background: var(--surface);
+  box-shadow: 0 -8px 24px rgb(0 0 0 / 0.4);
+  text-align: center;
+  animation: slideUp 0.2s ease-out;
+}
+
+.title {
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+/* Deny and accept side by side */
+.actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+}

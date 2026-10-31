@@ -39,7 +39,7 @@ export default function Wagering({ code, room, playerId, isHost }: RoomScreenPro
   return (
     <main className={shared.screen}>
       <header className={shared.screenHeader}>
-        <p className={shared.eyebrow}>{ROUND_LABEL(room.round)}</p>
+        <p className={shared.eyebrow}>{ROUND_LABEL(room.round, code)}</p>
         <h1>{WAGERING_TITLE}</h1>
       </header>
 
@@ -121,7 +121,7 @@ function WagerEditor({ initial, busy, onSubmit }: WagerEditorProps) {
       <div className={shared.aceGrid}>
         {ACES.map((a) => (
           <button key={a} className={shared.aceButton} aria-pressed={ace === a} onClick={() => setAce(a)}>
-            <AceLabel ace={a} />
+            <AceLabel ace={a} large />
           </button>
         ))}
       </div>

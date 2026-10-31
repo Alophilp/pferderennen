@@ -1,3 +1,26 @@
+/* Extra right padding keeps the header clear of the settings button next to the menu */
+.headerWithSettings {
+  padding-right: 112px;
+}
+
+/* Host only: gear button left of the "⋯" menu, with the same position and size.
+   Below the menu (z-index 20), so the open menu's backdrop covers it. */
+.settingsButton {
+  position: fixed;
+  top: max(12px, env(safe-area-inset-top));
+  right: calc(max(12px, env(safe-area-inset-right)) + 56px);
+  z-index: 15;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--surface-2);
+  font-size: 1.3rem;
+}
+
 /* Large room code for reading out to the others */
 .roomCode {
   font-size: 3.5rem;

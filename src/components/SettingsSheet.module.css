@@ -1,0 +1,32 @@
+/* Label above its options */
+.setting {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Options side by side in equal widths */
+.choice {
+  display: grid;
+  grid-auto-columns: 1fr;
+  grid-auto-flow: column;
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface-2);
+}
+
+.option {
+  min-height: 44px;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 10px;
+  background: none;
+  font-weight: 600;
+}
+
+.option[aria-pressed='true'] {
+  background: var(--accent);
+  color: var(--accent-text);
+}

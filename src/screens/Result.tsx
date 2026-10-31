@@ -1,10 +1,11 @@
 import { useEffect } from 'react'
 import AceLabel from '../components/AceLabel'
 import { useAction } from '../hooks/useAction'
-import { sortedPlayers } from '../lib/helpers'
+import { roomSettings, sortedPlayers } from '../lib/helpers'
 import { newRound } from '../lib/roomActions'
 import shared from '../styles/shared.module.css'
 import {
+  ACE_NAMES,
   OWN_PLAYER_SUFFIX,
   RESULT_DISTRIBUTE_LABEL,
   RESULT_NEW_ROUND_BUTTON,
@@ -38,7 +39,7 @@ export default function Result({ code, room, playerId, isHost }: RoomScreenProps
   return (
     <main className={shared.screen}>
       <header className={shared.screenHeader}>
-        <p className={shared.eyebrow}>{ROUND_LABEL(room.round)}</p>
+        <p className={shared.eyebrow}>{ROUND_LABEL(room.round, code)}</p>
         <h1>
           {winner ? (
             <>
@@ -80,7 +81,7 @@ export default function Result({ code, room, playerId, isHost }: RoomScreenProps
             ))}
           </ul>
         ) : (
-          winner && <p className={shared.muted}>{RESULT_NO_WINNERS(winner)}</p>
+          winner && <p className={shared.muted}>{RESULT_NO_WINNERS(ACE_NAMES[roomSettings(room).deck][winner])}</p>
         )}
       </section>
 

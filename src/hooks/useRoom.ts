@@ -1,6 +1,7 @@
 import { onValue, ref } from 'firebase/database'
 import { useEffect, useState } from 'react'
 import { getDb } from '../firebase'
+import { isStale } from '../lib/helpers'
 import { getPlayerId } from '../lib/player'
 import type { Room } from '../types'
 
@@ -9,7 +10,12 @@ export function useRoom(code: string) {
   const [snapshot, setSnapshot] = useState<{ code: string; room: Room | null } | null>(null)
 
   useEffect(
-    () => onValue(ref(getDb(), `rooms/${code}`), (s) => setSnapshot({ code, room: s.val() as Room | null })),
+    () =>
+      onValue(ref(getDb(), `rooms/${code}`), (s) => {
+        const room = s.val() as Room | null
+        // A stale room counts as closed even before it's deleted
+        setSnapshot({ code, room: room && !isStale(room) ? room : null })
+      }),
     [code],
   )
 
