@@ -211,6 +211,33 @@ export const RESULT_NEW_ROUND_DIALOG_MESSAGE = (names: string) =>
   `Noch offen: ${names}. Trotzdem eine neue Runde starten?`;
 export const RESULT_NEW_ROUND_DIALOG_CONFIRM = "Neue Runde";
 
+/* Losing streaks */
+
+// Badge next to a player's name on the wagering and racing screens, shown from the first loss in a row
+export const STREAK_BADGE = (streak: number) => `💀${streak}`;
+export const STREAK_BADGE_LABEL = (streak: number) =>
+  streak === 1 ? "1 Runde verloren" : `${streak} Runden in Folge verloren`;
+
+// Messages on the result screen after EXACTLY this many rounds lost in a row (the key).
+// Add, remove or change entries freely; both lists are independent of each other.
+
+// Only shown on the losing player's own phone
+export const STREAK_PRIVATE_MESSAGES: Partial<Record<number, string>> = {
+  3: "Das war jetzt das 3. mal in Folge verloren...",
+  5: "5 Niederlagen am Stück. Hast du mal versucht besser zu spielen?",
+  8: "8 in Folge. Ab dem Punkt ist es nur noch traurig...",
+  12: "Bro? Alles gut?",
+};
+
+// Shown on every phone; gets the losing player's name
+export const STREAK_GLOBAL_MESSAGES: Partial<
+  Record<number, (name: string) => string>
+> = {
+  5: (name) => `${name} hat 5 Runden in Folge verloren!`,
+  7: (name) => `${name} hat 7 Runden in Folge verloren!`,
+  10: (name) => `${name} hat 10 Runden in Folge verloren!`,
+};
+
 /* Distributing sips (winner, opened from the win card) */
 
 export const DISTRIBUTE_TITLE = "Schlücke verteilen";

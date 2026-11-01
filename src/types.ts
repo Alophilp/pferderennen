@@ -58,6 +58,7 @@ export interface Room {
   wagers?: Record<string, Wager> // cleared each round
   winner?: Ace
   distributions?: Record<string, Distribution> // per winner, set once they confirm; cleared each round
+  streaks?: Record<string, number> // rounds lost in a row per player; updated when the winner is declared, kept across rounds
   requests?: Record<string, JoinRequest>
   settings?: Partial<Settings> // missing values fall back to DEFAULT_SETTINGS
   lastActive?: number // server time of the last room creation, game start or new round; missing in rooms from before it existed

@@ -15,7 +15,7 @@ import { getDb } from '../firebase'
 import { isStale, ROOM_MAX_IDLE_MS } from './helpers'
 import { ERROR_NAME_TAKEN, ERROR_NO_FREE_ROOM_CODE, ERROR_ROOM_NOT_FOUND } from '../textValues'
 import type { Ace, Distribution, Room, Settings } from '../types'
-import { getPlayerId } from './player'
+import { getPlayerId, storeWager } from './player'
 
 // All writes to the database. Every phone re-renders from the room data, so these only change data.
 
@@ -126,9 +126,10 @@ export function startWagering(code: string) {
   return update(roomRef(code), { locked: true, phase: 'wagering', lastActive: serverTimestamp() })
 }
 
-// Saves the current player's wager as locked in
-export function placeWager(code: string, ace: Ace, sips: number) {
-  return set(roomRef(code, `wagers/${getPlayerId()}`), { ace, sips, confirmed: true })
+// Saves the current player's wager as locked in, and remembers it on this phone for the next round
+export async function placeWager(code: string, ace: Ace, sips: number) {
+  await set(roomRef(code, `wagers/${getPlayerId()}`), { ace, sips, confirmed: true })
+  storeWager(code, { ace, sips })
 }
 
 // Reopens the current player's wager for editing; they count as "not ready" until they lock in again
@@ -141,9 +142,14 @@ export function startRace(code: string) {
   return update(roomRef(code), { phase: 'racing' })
 }
 
-// Host: set the winning ace and show the result
-export function declareWinner(code: string, winner: Ace) {
-  return update(roomRef(code), { winner, phase: 'result' })
+// Host: set the winning ace, update the losing streaks and show the result.
+// A loss adds one to the player's streak, a win removes it; players without a wager keep theirs.
+export function declareWinner(code: string, room: Room, winner: Ace) {
+  const updates: Record<string, unknown> = { winner, phase: 'result' }
+  for (const [id, wager] of Object.entries(room.wagers ?? {})) {
+    updates[`streaks/${id}`] = wager.ace === winner ? null : (room.streaks?.[id] ?? 0) + 1
+  }
+  return update(roomRef(code), updates)
 }
 
 // Winner: publish how the current player handed out their sips; final once written
@@ -163,22 +169,31 @@ export function newRound(code: string) {
   })
 }
 
-// Guest: remove the current player and their wager from the room
+// Guest: remove the current player, their wager and their losing streak from the room
 export function leaveRoom(code: string) {
   const playerId = getPlayerId()
-  return update(roomRef(code), { [`players/${playerId}`]: null, [`wagers/${playerId}`]: null })
+  return update(roomRef(code), {
+    [`players/${playerId}`]: null,
+    [`wagers/${playerId}`]: null,
+    [`streaks/${playerId}`]: null,
+  })
 }
 
-// Host: remove a player and their wager. They may ask to join again.
+// Host: remove a player, their wager and their losing streak. They may ask to join again.
 export function kickPlayer(code: string, playerId: string) {
-  return update(roomRef(code), { [`players/${playerId}`]: null, [`wagers/${playerId}`]: null })
+  return update(roomRef(code), {
+    [`players/${playerId}`]: null,
+    [`wagers/${playerId}`]: null,
+    [`streaks/${playerId}`]: null,
+  })
 }
 
-// Host: remove a player and their wager, and block them. Listed as blocked under join requests, where they can be unblocked.
+// Host: remove a player, their wager and their losing streak, and block them. Listed as blocked under join requests, where they can be unblocked.
 export function kickAndBlockPlayer(code: string, playerId: string, name: string) {
   return update(roomRef(code), {
     [`players/${playerId}`]: null,
     [`wagers/${playerId}`]: null,
+    [`streaks/${playerId}`]: null,
     [`requests/${playerId}`]: { name, requestedAt: Date.now(), status: 'blocked' },
   })
 }

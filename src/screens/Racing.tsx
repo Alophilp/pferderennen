@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import AceLabel from '../components/AceLabel'
 import ConfirmDialog from '../components/ConfirmDialog'
+import StreakBadge from '../components/StreakBadge'
 import { useAction } from '../hooks/useAction'
-import { sortedPlayers } from '../lib/helpers'
+import { sortedPlayers, streakOf } from '../lib/helpers'
 import { declareWinner } from '../lib/roomActions'
 import shared from '../styles/shared.module.css'
 import {
@@ -53,6 +54,7 @@ export default function Racing({ code, room, playerId, isHost }: RoomScreenProps
                   {player.name}
                   {id === playerId && OWN_PLAYER_SUFFIX}
                 </span>
+                <StreakBadge streak={streakOf(room, id)} />
                 {wager && (
                   <span className={shared.playerMeta}>
                     {wager.sips} · <AceLabel ace={wager.ace} />
@@ -89,7 +91,7 @@ export default function Racing({ code, room, playerId, isHost }: RoomScreenProps
           confirmLabel={RACING_CONFIRM_WINNER_BUTTON}
           busy={busy}
           error={error}
-          onConfirm={() => run(() => declareWinner(code, pendingWinner))}
+          onConfirm={() => run(() => declareWinner(code, room, pendingWinner))}
           onCancel={() => setPendingWinner(null)}
         />
       )}

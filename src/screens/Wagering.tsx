@@ -2,8 +2,10 @@ import { useState } from 'react'
 import { FiMinus, FiPlus } from 'react-icons/fi'
 import AceLabel from '../components/AceLabel'
 import NumberInput from '../components/NumberInput'
+import StreakBadge from '../components/StreakBadge'
 import { useAction } from '../hooks/useAction'
-import { sortedPlayers } from '../lib/helpers'
+import { sortedPlayers, streakOf } from '../lib/helpers'
+import { getStoredWager, type StoredWager } from '../lib/player'
 import { editWager, placeWager, startRace } from '../lib/roomActions'
 import shared from '../styles/shared.module.css'
 import {
@@ -27,7 +29,7 @@ import {
   WAGERING_SUBMIT_BUTTON,
   WAGERING_TITLE,
 } from '../textValues'
-import { ACES, type Ace, type RoomScreenProps, type Wager } from '../types'
+import { ACES, type Ace, type RoomScreenProps } from '../types'
 import styles from './Wagering.module.css'
 
 const MAX_SIPS = 99
@@ -58,7 +60,7 @@ export default function Wagering({ code, room, playerId, isHost }: RoomScreenPro
           </button>
         </section>
       ) : (
-        <WagerEditor initial={myWager} busy={busy} onSubmit={(ace, sips) => run(() => placeWager(code, ace, sips))} />
+        <WagerEditor initial={myWager ?? getStoredWager(code) ?? undefined} busy={busy} onSubmit={(ace, sips) => run(() => placeWager(code, ace, sips))} />
       )}
 
       {error && <p className={shared.error}>{error}</p>}
@@ -74,6 +76,7 @@ export default function Wagering({ code, room, playerId, isHost }: RoomScreenPro
                   {player.name}
                   {id === playerId && OWN_PLAYER_SUFFIX}
                 </span>
+                <StreakBadge streak={streakOf(room, id)} />
                 {wager && (
                   <span className={shared.playerMeta}>
                     {wager.sips} · <AceLabel ace={wager.ace} />
@@ -109,7 +112,7 @@ export default function Wagering({ code, room, playerId, isHost }: RoomScreenPro
 }
 
 interface WagerEditorProps {
-  initial?: Wager // previous wager when reopened via "Ändern"
+  initial?: StoredWager // previous wager when reopened via "Ändern", otherwise this phone's wager from the last round
   busy: boolean
   onSubmit: (ace: Ace, sips: number) => void
 }

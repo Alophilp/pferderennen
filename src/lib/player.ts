@@ -1,7 +1,10 @@
+import { ACES, type Wager } from '../types'
+
 const KEYS = {
   id: 'pferderennen.playerId',
   name: 'pferderennen.name',
   room: 'pferderennen.room',
+  wager: 'pferderennen.lastWager',
 }
 
 // Fallback for when localStorage is unavailable (private mode, blocked storage)
@@ -54,4 +57,21 @@ export function getStoredRoom(): string | null {
 
 export function storeRoom(code: string | null) {
   write(KEYS.room, code)
+}
+
+export type StoredWager = Pick<Wager, 'ace' | 'sips'>
+
+// Last wager placed on this phone, so the next round starts with it. Tied to the room so it doesn't carry over into another one.
+export function getStoredWager(code: string): StoredWager | null {
+  try {
+    const stored = JSON.parse(read(KEYS.wager) ?? 'null')
+    if (stored?.room !== code || !ACES.includes(stored.ace) || !Number.isInteger(stored.sips) || stored.sips < 1) return null
+    return { ace: stored.ace, sips: stored.sips }
+  } catch {
+    return null
+  }
+}
+
+export function storeWager(code: string, wager: StoredWager) {
+  write(KEYS.wager, JSON.stringify({ room: code, ...wager }))
 }

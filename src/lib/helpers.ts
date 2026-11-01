@@ -5,6 +5,11 @@ export function sortedPlayers(room: Room): [string, Player][] {
   return Object.entries(room.players).sort(([, a], [, b]) => a.joinedAt - b.joinedAt)
 }
 
+// Rounds the player has lost in a row; 0 if they haven't lost the last round
+export function streakOf(room: Room, playerId: string): number {
+  return room.streaks?.[playerId] ?? 0
+}
+
 // Rooms without a new round for this long count as closed and are deleted the next time someone creates a room
 export const ROOM_MAX_IDLE_MS = 12 * 60 * 60 * 1000
 
