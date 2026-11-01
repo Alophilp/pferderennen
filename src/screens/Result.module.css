@@ -28,6 +28,30 @@
   font-weight: 600;
 }
 
+/* Losing streak message for this player only, below "Du hast verloren" */
+.streakMessage {
+  margin-top: 8px;
+  color: var(--danger);
+  font-weight: 700;
+}
+
+/* Losing streak messages shown to everyone, below the win/lost card */
+.streakAnnouncements {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.streakAnnouncement {
+  border-color: var(--danger);
+  background: color-mix(in srgb, var(--danger) 12%, var(--surface));
+  font-weight: 700;
+  text-align: center;
+}
+
 /* Sips received from winners, below the win/lost message */
 .received {
   display: flex;

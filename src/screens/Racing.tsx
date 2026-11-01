@@ -1,9 +1,12 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import raceStartSound from '../assets/sounds/Horns Trompet Start Of Horse Race Sound - Sound Effect (HD).mp3'
 import AceLabel from '../components/AceLabel'
 import ConfirmDialog from '../components/ConfirmDialog'
+import StreakBadge from '../components/StreakBadge'
 import { useAction } from '../hooks/useAction'
-import { sortedPlayers } from '../lib/helpers'
+import { roomSettings, sortedPlayers, streakOf } from '../lib/helpers'
 import { declareWinner } from '../lib/roomActions'
+import { playSound } from '../lib/sound'
 import shared from '../styles/shared.module.css'
 import {
   OWN_PLAYER_SUFFIX,
@@ -23,6 +26,16 @@ export default function Racing({ code, room, playerId, isHost }: RoomScreenProps
   const [run, busy, error] = useAction()
   const [pendingWinner, setPendingWinner] = useState<Ace | null>(null)
   const myWager = room.wagers?.[playerId]
+
+  // Bugle fanfare once when the race starts, on every phone. The ref keeps React's dev-mode double effect from playing it
+  // twice; the room setting only changes in the lobby, so it never triggers this here.
+  const roomSound = roomSettings(room).sound
+  const fanfarePlayed = useRef(false)
+  useEffect(() => {
+    if (fanfarePlayed.current) return
+    fanfarePlayed.current = true
+    playSound(raceStartSound, roomSound)
+  }, [roomSound])
 
   return (
     <main className={shared.screen}>
@@ -53,6 +66,7 @@ export default function Racing({ code, room, playerId, isHost }: RoomScreenProps
                   {player.name}
                   {id === playerId && OWN_PLAYER_SUFFIX}
                 </span>
+                <StreakBadge streak={streakOf(room, id)} />
                 {wager && (
                   <span className={shared.playerMeta}>
                     {wager.sips} · <AceLabel ace={wager.ace} />
@@ -89,7 +103,7 @@ export default function Racing({ code, room, playerId, isHost }: RoomScreenProps
           confirmLabel={RACING_CONFIRM_WINNER_BUTTON}
           busy={busy}
           error={error}
-          onConfirm={() => run(() => declareWinner(code, pendingWinner))}
+          onConfirm={() => run(() => declareWinner(code, room, pendingWinner))}
           onCancel={() => setPendingWinner(null)}
         />
       )}

@@ -3,7 +3,7 @@ import AceLabel from '../components/AceLabel'
 import ConfirmDialog from '../components/ConfirmDialog'
 import DistributeSheet from '../components/DistributeSheet'
 import { useAction } from '../hooks/useAction'
-import { roomSettings, sortedPlayers } from '../lib/helpers'
+import { roomSettings, sortedPlayers, streakOf, vibrate } from '../lib/helpers'
 import { newRound } from '../lib/roomActions'
 import shared from '../styles/shared.module.css'
 import {
@@ -33,6 +33,8 @@ import {
   RESULT_YOU_WON,
   ROUND_LABEL,
   SIPS_UNIT,
+  STREAK_GLOBAL_MESSAGES,
+  STREAK_PRIVATE_MESSAGES,
 } from '../textValues'
 import type { Distribution, Room, RoomScreenProps } from '../types'
 import styles from './Result.module.css'
@@ -53,20 +55,29 @@ export default function Result({ code, room, playerId, isHost }: RoomScreenProps
   // Winners who haven't handed out their sips yet; the host is asked before starting a new round without them
   const pendingWinners = distributing ? winners.filter(([id]) => !room.distributions?.[id]) : []
 
+  // Losing streak messages for streaks that just reached one of the configured lengths
+  const myStreakMessage = STREAK_PRIVATE_MESSAGES[streakOf(room, playerId)]
+  const streakAnnouncements = sortedPlayers(room).flatMap(([id, player]) => {
+    const message = STREAK_GLOBAL_MESSAGES[streakOf(room, id)]
+    return message ? [{ id, text: message(player.name) }] : []
+  })
+
   const received = distributing ? receivedSips(room, playerId) : []
   const receivedTotal = received.reduce((sum, { sips }) => sum + sips, 0)
   const lastReceivedTotal = useRef(receivedTotal)
 
-  // Vibration is Android only; iOS Safari has no vibration API
+  // Vibration can be turned off by the host for everyone, or by each player for themselves.
+  // The room setting only changes in the lobby, so it never triggers these effects here.
+  const roomVibration = roomSettings(room).vibration
   useEffect(() => {
-    if (myWinnings !== null) navigator.vibrate?.([200, 100, 200])
-  }, [myWinnings])
+    if (myWinnings !== null) vibrate(roomVibration, [200, 100, 200])
+  }, [myWinnings, roomVibration])
 
   // Buzz whenever a winner hands this player more sips (not on load, so a reload doesn't buzz again)
   useEffect(() => {
-    if (receivedTotal > lastReceivedTotal.current) navigator.vibrate?.(400)
+    if (receivedTotal > lastReceivedTotal.current) vibrate(roomVibration, 400)
     lastReceivedTotal.current = receivedTotal
-  }, [receivedTotal])
+  }, [receivedTotal, roomVibration])
 
   const startNewRound = () => run(() => newRound(code))
 
@@ -102,8 +113,19 @@ export default function Result({ code, room, playerId, isHost }: RoomScreenProps
       ) : (
         <section className={`${shared.card} ${shared.centerText}`}>
           <p>{RESULT_YOU_LOST}</p>
+          {myStreakMessage && <p className={styles.streakMessage}>{myStreakMessage}</p>}
           <ReceivedSips received={received} total={receivedTotal} room={room} playerId={playerId} />
         </section>
+      )}
+
+      {streakAnnouncements.length > 0 && (
+        <ul className={styles.streakAnnouncements}>
+          {streakAnnouncements.map(({ id, text }) => (
+            <li key={id} className={`${shared.card} ${styles.streakAnnouncement}`}>
+              {text}
+            </li>
+          ))}
+        </ul>
       )}
 
       <section className={shared.stack}>

@@ -11,6 +11,8 @@ import {
   SETTINGS_DISTRIBUTE_SIPS_LABEL,
   SETTINGS_RESET_BUTTON,
   SETTINGS_TITLE,
+  SETTINGS_SOUND_LABEL,
+  SETTINGS_VIBRATION_LABEL,
 } from '../textValues'
 import type { Room } from '../types'
 import Sheet from './Sheet'
@@ -49,6 +51,18 @@ export default function SettingsSheet({ code, room, onClose }: SettingsSheetProp
           value={settings.distributeSips}
           onChange={(distributeSips) => run(() => updateSetting(code, 'distributeSips', distributeSips))}
         />
+        <Choice
+          label={SETTINGS_VIBRATION_LABEL}
+          options={ON_OFF_NAMES}
+          value={settings.vibration}
+          onChange={(vibration) => run(() => updateSetting(code, 'vibration', vibration))}
+        />
+        <Choice
+          label={SETTINGS_SOUND_LABEL}
+          options={ON_OFF_NAMES}
+          value={settings.sound}
+          onChange={(sound) => run(() => updateSetting(code, 'sound', sound))}
+        />
         {/* Nothing to reset while every setting is at its default */}
         <button className={shared.btn} disabled={busy || !room.settings} onClick={() => run(() => resetSettings(code))}>
           {SETTINGS_RESET_BUTTON}
@@ -63,20 +77,29 @@ interface ChoiceProps<T extends string> {
   options: Record<T, string> // value → display name
   value: T
   onChange: (value: T) => void
+  disabled?: boolean
+  hint?: string // shown below the options, e.g. why they're disabled
 }
 
-// Segmented control: one button per option, the selected one highlighted
-function Choice<T extends string>({ label, options, value, onChange }: ChoiceProps<T>) {
+// Segmented control: one button per option, the selected one highlighted. Also used by PersonalSettingsSheet.
+export function Choice<T extends string>({ label, options, value, onChange, disabled = false, hint }: ChoiceProps<T>) {
   return (
     <div className={styles.setting}>
       <span className={shared.muted}>{label}</span>
       <div className={styles.choice} role="group" aria-label={label}>
         {(Object.keys(options) as T[]).map((option) => (
-          <button key={option} className={styles.option} aria-pressed={option === value} onClick={() => onChange(option)}>
+          <button
+            key={option}
+            className={styles.option}
+            aria-pressed={option === value}
+            disabled={disabled}
+            onClick={() => onChange(option)}
+          >
             {options[option]}
           </button>
         ))}
       </div>
+      {hint && <span className={`${shared.muted} ${shared.small}`}>{hint}</span>}
     </div>
   )
 }

@@ -16,12 +16,27 @@ export interface Settings {
   deck: Deck
   aceDisplay: AceDisplay
   distributeSips: OnOff // winners hand out their sips in the app instead of at the table
+  vibration: OnOff // off: no phone vibrates, whatever the players' own settings say
+  sound: OnOff // off: no phone plays sounds, whatever the players' own settings say
 }
 
 export const DEFAULT_SETTINGS: Settings = {
   deck: 'bavarian',
   aceDisplay: 'icon',
   distributeSips: 'off',
+  vibration: 'on',
+  sound: 'off',
+}
+
+// Each player's own settings, changed from the room menu and stored on their phone only
+export interface PersonalSettings {
+  vibration: OnOff
+  sound: OnOff
+}
+
+export const DEFAULT_PERSONAL_SETTINGS: PersonalSettings = {
+  vibration: 'on',
+  sound: 'on',
 }
 
 // Sips a winner handed out: receiving playerId → sips
@@ -58,6 +73,7 @@ export interface Room {
   wagers?: Record<string, Wager> // cleared each round
   winner?: Ace
   distributions?: Record<string, Distribution> // per winner, set once they confirm; cleared each round
+  streaks?: Record<string, number> // rounds lost in a row per player; updated when the winner is declared, kept across rounds
   requests?: Record<string, JoinRequest>
   settings?: Partial<Settings> // missing values fall back to DEFAULT_SETTINGS
   lastActive?: number // server time of the last room creation, game start or new round; missing in rooms from before it existed

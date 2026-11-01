@@ -108,6 +108,7 @@ export const MENU_CLOSE_ROOM = "Raum schließen";
 export const MENU_LEAVE_ROOM = "Raum verlassen";
 export const MENU_JOIN_REQUESTS = "Beitrittsanfragen";
 export const MENU_MANAGE_PLAYERS = "Spieler verwalten";
+export const MENU_PERSONAL_SETTINGS = "Meine Einstellungen";
 export const CLOSE_ROOM_DIALOG_TITLE = "Raum schließen?";
 export const CLOSE_ROOM_DIALOG_MESSAGE = "Der Raum wird für alle beendet.";
 export const CLOSE_ROOM_DIALOG_CONFIRM = "Schließen";
@@ -132,10 +133,22 @@ export const ACE_DISPLAY_NAMES: Record<AceDisplay, string> = {
   iconAndName: "Symbol & Name",
 };
 export const SETTINGS_DISTRIBUTE_SIPS_LABEL = "Schlücke in der App verteilen";
+export const SETTINGS_VIBRATION_LABEL = "Vibration";
+export const SETTINGS_SOUND_LABEL = "Sound";
 export const ON_OFF_NAMES: Record<OnOff, string> = {
   off: "Aus",
   on: "An",
 };
+
+/* Personal settings (every player, opened from the room menu; stored on the phone) */
+
+export const PERSONAL_SETTINGS_TITLE = "Meine Einstellungen";
+export const PERSONAL_SETTINGS_VIBRATION_LABEL = "Vibration";
+export const PERSONAL_SETTINGS_SOUND_LABEL = "Sound";
+export const PERSONAL_SETTINGS_SOUND_OFF_BY_HOST =
+  "Vom Host für alle ausgeschaltet.";
+export const PERSONAL_SETTINGS_VIBRATION_OFF_BY_HOST =
+  "Vom Host für alle ausgeschaltet.";
 
 /* Lobby */
 
@@ -210,6 +223,33 @@ export const RESULT_NEW_ROUND_DIALOG_TITLE = "Noch nicht alle haben verteilt";
 export const RESULT_NEW_ROUND_DIALOG_MESSAGE = (names: string) =>
   `Noch offen: ${names}. Trotzdem eine neue Runde starten?`;
 export const RESULT_NEW_ROUND_DIALOG_CONFIRM = "Neue Runde";
+
+/* Losing streaks */
+
+// Badge next to a player's name on the wagering and racing screens, shown from the first loss in a row
+export const STREAK_BADGE = (streak: number) => `💀${streak}`;
+export const STREAK_BADGE_LABEL = (streak: number) =>
+  streak === 1 ? "1 Runde verloren" : `${streak} Runden in Folge verloren`;
+
+// Messages on the result screen after EXACTLY this many rounds lost in a row (the key).
+// Add, remove or change entries freely; both lists are independent of each other.
+
+// Only shown on the losing player's own phone
+export const STREAK_PRIVATE_MESSAGES: Partial<Record<number, string>> = {
+  3: "Das war jetzt das 3. mal in Folge verloren...",
+  5: "5 Niederlagen am Stück. Hast du mal versucht besser zu spielen?",
+  8: "8 in Folge. Ab dem Punkt ist es nur noch traurig...",
+  12: "Bro? Alles gut?",
+};
+
+// Shown on every phone; gets the losing player's name
+export const STREAK_GLOBAL_MESSAGES: Partial<
+  Record<number, (name: string) => string>
+> = {
+  5: (name) => `${name} hat 5 Runden in Folge verloren!`,
+  7: (name) => `${name} hat 7 Runden in Folge verloren!`,
+  10: (name) => `${name} hat 10 Runden in Folge verloren!`,
+};
 
 /* Distributing sips (winner, opened from the win card) */
 
