@@ -3,7 +3,7 @@ import AceLabel from '../components/AceLabel'
 import ConfirmDialog from '../components/ConfirmDialog'
 import DistributeSheet from '../components/DistributeSheet'
 import { useAction } from '../hooks/useAction'
-import { roomSettings, sortedPlayers, streakOf } from '../lib/helpers'
+import { roomSettings, sortedPlayers, streakOf, vibrate } from '../lib/helpers'
 import { newRound } from '../lib/roomActions'
 import shared from '../styles/shared.module.css'
 import {
@@ -66,16 +66,18 @@ export default function Result({ code, room, playerId, isHost }: RoomScreenProps
   const receivedTotal = received.reduce((sum, { sips }) => sum + sips, 0)
   const lastReceivedTotal = useRef(receivedTotal)
 
-  // Vibration is Android only; iOS Safari has no vibration API
+  // Vibration can be turned off by the host for everyone, or by each player for themselves.
+  // The room setting only changes in the lobby, so it never triggers these effects here.
+  const roomVibration = roomSettings(room).vibration
   useEffect(() => {
-    if (myWinnings !== null) navigator.vibrate?.([200, 100, 200])
-  }, [myWinnings])
+    if (myWinnings !== null) vibrate(roomVibration, [200, 100, 200])
+  }, [myWinnings, roomVibration])
 
   // Buzz whenever a winner hands this player more sips (not on load, so a reload doesn't buzz again)
   useEffect(() => {
-    if (receivedTotal > lastReceivedTotal.current) navigator.vibrate?.(400)
+    if (receivedTotal > lastReceivedTotal.current) vibrate(roomVibration, 400)
     lastReceivedTotal.current = receivedTotal
-  }, [receivedTotal])
+  }, [receivedTotal, roomVibration])
 
   const startNewRound = () => run(() => newRound(code))
 

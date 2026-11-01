@@ -108,6 +108,7 @@ export const MENU_CLOSE_ROOM = "Raum schließen";
 export const MENU_LEAVE_ROOM = "Raum verlassen";
 export const MENU_JOIN_REQUESTS = "Beitrittsanfragen";
 export const MENU_MANAGE_PLAYERS = "Spieler verwalten";
+export const MENU_PERSONAL_SETTINGS = "Meine Einstellungen";
 export const CLOSE_ROOM_DIALOG_TITLE = "Raum schließen?";
 export const CLOSE_ROOM_DIALOG_MESSAGE = "Der Raum wird für alle beendet.";
 export const CLOSE_ROOM_DIALOG_CONFIRM = "Schließen";
@@ -132,10 +133,22 @@ export const ACE_DISPLAY_NAMES: Record<AceDisplay, string> = {
   iconAndName: "Symbol & Name",
 };
 export const SETTINGS_DISTRIBUTE_SIPS_LABEL = "Schlücke in der App verteilen";
+export const SETTINGS_VIBRATION_LABEL = "Vibration";
+export const SETTINGS_SOUND_LABEL = "Sound";
 export const ON_OFF_NAMES: Record<OnOff, string> = {
   off: "Aus",
   on: "An",
 };
+
+/* Personal settings (every player, opened from the room menu; stored on the phone) */
+
+export const PERSONAL_SETTINGS_TITLE = "Meine Einstellungen";
+export const PERSONAL_SETTINGS_VIBRATION_LABEL = "Vibration";
+export const PERSONAL_SETTINGS_SOUND_LABEL = "Sound";
+export const PERSONAL_SETTINGS_SOUND_OFF_BY_HOST =
+  "Vom Host für alle ausgeschaltet.";
+export const PERSONAL_SETTINGS_VIBRATION_OFF_BY_HOST =
+  "Vom Host für alle ausgeschaltet.";
 
 /* Lobby */
 

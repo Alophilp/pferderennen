@@ -1,10 +1,11 @@
-import { ACES, type Wager } from '../types'
+import { ACES, DEFAULT_PERSONAL_SETTINGS, type PersonalSettings, type Wager } from '../types'
 
 const KEYS = {
   id: 'pferderennen.playerId',
   name: 'pferderennen.name',
   room: 'pferderennen.room',
   wager: 'pferderennen.lastWager',
+  personalSettings: 'pferderennen.personalSettings',
 }
 
 // Fallback for when localStorage is unavailable (private mode, blocked storage)
@@ -74,4 +75,17 @@ export function getStoredWager(code: string): StoredWager | null {
 
 export function storeWager(code: string, wager: StoredWager) {
   write(KEYS.wager, JSON.stringify({ room: code, ...wager }))
+}
+
+// This phone's personal settings, with the defaults filled in for anything not stored
+export function getPersonalSettings(): PersonalSettings {
+  try {
+    return { ...DEFAULT_PERSONAL_SETTINGS, ...JSON.parse(read(KEYS.personalSettings) ?? '{}') }
+  } catch {
+    return DEFAULT_PERSONAL_SETTINGS
+  }
+}
+
+export function storePersonalSetting<K extends keyof PersonalSettings>(key: K, value: PersonalSettings[K]) {
+  write(KEYS.personalSettings, JSON.stringify({ ...getPersonalSettings(), [key]: value }))
 }

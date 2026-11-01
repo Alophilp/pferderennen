@@ -16,12 +16,27 @@ export interface Settings {
   deck: Deck
   aceDisplay: AceDisplay
   distributeSips: OnOff // winners hand out their sips in the app instead of at the table
+  vibration: OnOff // off: no phone vibrates, whatever the players' own settings say
+  sound: OnOff // off: no phone plays sounds, whatever the players' own settings say
 }
 
 export const DEFAULT_SETTINGS: Settings = {
   deck: 'bavarian',
   aceDisplay: 'icon',
   distributeSips: 'off',
+  vibration: 'on',
+  sound: 'off',
+}
+
+// Each player's own settings, changed from the room menu and stored on their phone only
+export interface PersonalSettings {
+  vibration: OnOff
+  sound: OnOff
+}
+
+export const DEFAULT_PERSONAL_SETTINGS: PersonalSettings = {
+  vibration: 'on',
+  sound: 'on',
 }
 
 // Sips a winner handed out: receiving playerId → sips
